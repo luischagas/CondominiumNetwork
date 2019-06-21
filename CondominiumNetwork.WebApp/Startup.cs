@@ -20,6 +20,9 @@ using CondominiumNetwork.DomainModel.Interfaces.Services;
 using CondominiumNetwork.DomainService;
 using CondominiumNetwork.DomainModel.Identity;
 using CondominiumNetwork.WebApp.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using CondominiumNetwork.WebApp.Areas.Identity.Pages.Account;
+using Microsoft.AspNet.Identity;
 
 namespace CondominiumNetwork.WebApp
 {
@@ -52,9 +55,8 @@ namespace CondominiumNetwork.WebApp
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<CondominiumNetworkContext>()
-                .AddSignInManager()
+                .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(Startup));
@@ -64,7 +66,8 @@ namespace CondominiumNetwork.WebApp
             services.AddScoped<CondominiumNetworkContext>();
             services.AddScoped<IOcurrenceService, OcurrenceService>();
             services.AddScoped<IOcurrenceRepository, OcurrenceRepository>();
-        }   
+            services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

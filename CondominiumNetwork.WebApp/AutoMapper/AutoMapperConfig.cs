@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CondominiumNetwork.DomainModel.Entities;
+using CondominiumNetwork.WebApp.Areas.Identity.Pages.Account;
 using CondominiumNetwork.WebApp.ViewModels;
 using Profile = AutoMapper.Profile;
 
