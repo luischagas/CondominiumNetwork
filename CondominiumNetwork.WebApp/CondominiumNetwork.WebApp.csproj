@@ -1,14 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-CondominiumNetwork.WebApp-110043B7-4CD7-450E-9BFF-B55FD31907C5</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="automapper.extensions.microsoft.dependencyInjection" Version="6.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\CondominiumNetwork.DomainModel\CondominiumNetwork.DomainModel.csproj" />
+    <ProjectReference Include="..\CondominiumNetwork.DomainService\CondominiumNetwork.DomainService.csproj" />
+    <ProjectReference Include="..\CondominiumNetwork.Infrastructure.AzureStorage\CondominiumNetwork.Infrastructure.AzureStorage.csproj" />
+    <ProjectReference Include="..\CondominiumNetwork.Infrastructure.DataAcess\CondominiumNetwork.Infrastructure.DataAcess.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using System;
 
-namespace CondominiumNetwork.WebApp.Models
+namespace CondominiumNetwork.WebApp.ViewModels
 {
     public class ErrorViewModel
     {

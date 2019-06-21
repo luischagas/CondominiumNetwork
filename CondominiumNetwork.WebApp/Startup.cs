@@ -3,12 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CondominiumNetwork.Infrastructure.DataAcess.Context;
+using CondominiumNetwork.DomainModel.Interfaces.Repositories;
+using CondominiumNetwork.Infrastructure.DataAcess.Repository;
+using AutoMapper;
+using CondominiumNetwork.DomainModel.Interfaces.Services;
+using CondominiumNetwork.DomainService;
+using CondominiumNetwork.DomainModel.Identity;
+using CondominiumNetwork.WebApp.Data;
 
 namespace CondominiumNetwork.WebApp
 {
@@ -31,9 +42,29 @@ namespace CondominiumNetwork.WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+
+            services.AddDbContext<CondominiumNetworkContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<CondominiumNetworkContext>()
+                .AddSignInManager()
+                .AddDefaultTokenProviders();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-        }
+
+            services.AddScoped<CondominiumNetworkContext>();
+            services.AddScoped<IOcurrenceService, OcurrenceService>();
+            services.AddScoped<IOcurrenceRepository, OcurrenceRepository>();
+        }   
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -41,6 +72,7 @@ namespace CondominiumNetwork.WebApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -52,6 +84,8 @@ namespace CondominiumNetwork.WebApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
