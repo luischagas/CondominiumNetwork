@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using CondominiumNetwork.DomainModel.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CondominiumNetwork.WebApp.ViewModels
 {
-    public class OcurrenceViewModel
+    public class AnswerViewModel
     {
         [Key]
         public Guid Id { get; set; }
@@ -14,10 +16,8 @@ namespace CondominiumNetwork.WebApp.ViewModels
 
         [Required(ErrorMessage = "The {0} field is required")]
         public string Content { get; set; }
-
-        [Required(ErrorMessage = "The {0} field is required")]
-        public string Category { get; set; }
-        public ProfileViewModel Profile { get; set; }
-        public IEnumerable<AnswerViewModel> Answers { get; set; }
+        public Guid OcurrenceId { get; set; }
+        public Guid ProfileId { get; set; }
+        public Profile Profile { get; set; }
     }
 }

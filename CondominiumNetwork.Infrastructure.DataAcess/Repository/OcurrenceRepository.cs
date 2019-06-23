@@ -27,7 +27,7 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Repository
 
         public virtual async Task Delete(Guid id)
         {
-            _db.Remove(Read(id));
+            _db.Remove(await Read(id));
             await SaveChanges();
         }
 
@@ -70,9 +70,15 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Repository
             _db.Dispose();
         }
 
-        public Task<IEnumerable<Ocurrence>> GetOcurrenceAnswers(Guid id)
+        public async Task<Ocurrence> GetOcurrenceAnswers(Guid id)
         {
-            throw new NotImplementedException();
+            var ocurrences = await _db.Ocurrences.AsNoTracking()
+                 .Include(p => p.Profile)
+                 .Include(a => a.Answers)
+                    .ThenInclude(p => p.Profile)
+                 .FirstOrDefaultAsync();
+
+            return ocurrences;
         }
     }
 }

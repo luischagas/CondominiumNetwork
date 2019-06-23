@@ -10,8 +10,10 @@ namespace CondominiumNetwork.WebApp.AutoMapper
     {
         public AutoMapperConfig()
         {
-            CreateMap<Ocurrence, OcurrenceViewModel>();
-            CreateMap<Profile, ProfileViewModel>();
+            CreateMap<Ocurrence, OcurrenceViewModel>().ReverseMap();
+            CreateMap<Profile, ProfileViewModel>().ReverseMap();
+            CreateMap<Answer, AnswerViewModel>().ReverseMap();
+
         }
     }
 }

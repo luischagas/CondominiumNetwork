@@ -1,0 +1,64 @@
+﻿@model CondominiumNetwork.WebApp.ViewModels.OcurrenceViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<script>
+        $(document).ready(function () {
+            AjaxModal();
+        });
+</script>
+
+
+<div style="padding-top: 20px">
+    <div>
+        <hr />
+        <h4>Answers</h4>
+    </div>
+
+    @if (Model != null)
+    {
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        <span>Content</span>
+                    </th>
+                    <th>
+                        <span>Sender</span>
+                    </th>
+                    <th>
+                        <span>Publish Date</span>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Answers)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Profile.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PublishDateTime)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tbody>
+                <tr>
+                    <td>
+                        <a asp-action="CreateAnswer" asp-controller="Answers" class="btn btn-info" data-modal="">
+                            <span>New Answer</span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+</div>

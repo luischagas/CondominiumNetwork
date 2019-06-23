@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CondominiumNetwork.WebApp.ViewModels;
 
 namespace CondominiumNetwork.WebApp.Data
 {
@@ -13,5 +14,7 @@ namespace CondominiumNetwork.WebApp.Data
             : base(options)
         {
         }
+        public DbSet<CondominiumNetwork.WebApp.ViewModels.ProfileViewModel> ProfileViewModel { get; set; }
+        public DbSet<CondominiumNetwork.WebApp.ViewModels.AnswerViewModel> AnswerViewModel { get; set; }
     }
 }

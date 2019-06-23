@@ -46,10 +46,15 @@ namespace CondominiumNetwork.DomainService
         {
             return await _ocurrenceRepository.GetOcurrencesProfile(profileId);
         }
-
+        public async Task<Ocurrence> GetOcurrenceAnswers(Guid id)
+        {
+            return await _ocurrenceRepository.GetOcurrenceAnswers(id);
+        }
         public void Dispose()
         {
            _ocurrenceRepository?.Dispose();
         }
+
+
     }
 }

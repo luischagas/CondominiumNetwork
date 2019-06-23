@@ -14,5 +14,6 @@ namespace CondominiumNetwork.DomainModel.Interfaces.Services
         Task Update(Ocurrence ocurrence);
         Task Delete(Guid id);
         Task<IEnumerable<Ocurrence>> GetOcurrencesProfile(Guid id);
+        Task<Ocurrence> GetOcurrenceAnswers(Guid id);
     }
 }

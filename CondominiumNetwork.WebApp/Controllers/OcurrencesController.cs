@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using CondominiumNetwork.WebApp.ViewModels;
-using CondominiumNetwork.Infrastructure.DataAcess.Context;
 using CondominiumNetwork.DomainModel.Interfaces.Services;
 using AutoMapper;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using CondominiumNetwork.DomainModel.Identity;
+using CondominiumNetwork.DomainModel.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace CondominiumNetwork.WebApp.Controllers
 {
     public class OcurrencesController : Controller
     {
-        private readonly IOcurrenceService _fornecedorService;
+        private readonly IOcurrenceService _ocurrenceService;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public OcurrencesController(IMapper mapper, IOcurrenceService fornecedorService, UserManager<ApplicationUser> userManager)
+        public OcurrencesController(IMapper mapper, IOcurrenceService ocurrenceService, UserManager<ApplicationUser> userManager)
         {
-            _fornecedorService = fornecedorService;
+            _ocurrenceService = ocurrenceService;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -31,19 +28,17 @@ namespace CondominiumNetwork.WebApp.Controllers
         // GET: Ocurrences
         public async Task<IActionResult> Index()
         {
-            ApplicationUser usr = await GetCurrentUserAsync();
+            return View(_mapper.Map<IEnumerable<OcurrenceViewModel>>(await _ocurrenceService.GetAll()));
+        }
 
+        // GET: Ocurrences/Details/5
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var ocurrenceViewModel = await GetDetailsOcurrence(id);
 
-            var currentUserGuid = Guid.Parse(usr.Id);
+            HttpContext.Session.SetString("OcurrenceId", Convert.ToString(id));
 
-            if (currentUserGuid == null)
-            {
-                return NotFound();
-            }
-
-            var ocurrenceViewModel = await GetOcurrencesProfile(currentUserGuid);
-
-            if (ocurrenceViewModel.Count() == 0)
+            if (ocurrenceViewModel == null)
             {
                 return NotFound();
             }
@@ -51,11 +46,30 @@ namespace CondominiumNetwork.WebApp.Controllers
             return View(ocurrenceViewModel);
         }
 
-        // GET: Ocurrences/Details/5
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> GetOcurrenceAnswers(Guid id)
+        {
+            var ocurrence = await GetDetailsOcurrence(id);
+
+            if (ocurrence == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_AnswersOcurrence", ocurrence);
+        }
+
+        // GET: Ocurrences/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Ocurrences/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,PublishDateTime,Content,Category")] OcurrenceViewModel ocurrenceViewModel)
         {
             ApplicationUser usr = await GetCurrentUserAsync();
-
 
             var currentUserGuid = Guid.Parse(usr.Id);
 
@@ -64,126 +78,99 @@ namespace CondominiumNetwork.WebApp.Controllers
                 return NotFound();
             }
 
-            var ocurrenceViewModel = await GetOcurrencesProfile(currentUserGuid);
+            if (!ModelState.IsValid) return View(ocurrenceViewModel);
 
-            if (ocurrenceViewModel.Count() == 0)
+            var ocurrence = _mapper.Map<Ocurrence>(ocurrenceViewModel);
+
+            ocurrence.ProfileId = currentUserGuid;
+
+            await _ocurrenceService.Create(ocurrence);
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        // GET: Ocurrences/Edit/5
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var ocurrenceViewModel = await GetDetailsOcurrence(id);
+
+            if (ocurrenceViewModel == null)
             {
                 return NotFound();
             }
 
             return View(ocurrenceViewModel);
+        }
+
+        // POST: Ocurrences/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,PublishDateTime,Content,Category")] OcurrenceViewModel ocurrenceViewModel)
+        {
+
+            ApplicationUser usr = await GetCurrentUserAsync();
+
+            var currentUserGuid = Guid.Parse(usr.Id);
+
+            if (currentUserGuid == null)
+            {
+                return NotFound();
+            }
+
+            if (id != ocurrenceViewModel.Id)
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid) return View(ocurrenceViewModel);
+
+            var ocurrence = _mapper.Map<Ocurrence>(ocurrenceViewModel);
+            ocurrence.ProfileId = currentUserGuid;
+            await _ocurrenceService.Update(ocurrence);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Ocurrences/Delete/5
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var ocurrenceViewModel = await GetDetailsOcurrence(id);
+
+            if (ocurrenceViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(ocurrenceViewModel);
+        }
+
+        // POST: Ocurrences/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var ocurrenceViewModel = await GetDetailsOcurrence(id);
+
+            if (ocurrenceViewModel == null) return NotFound();
+
+            await _ocurrenceService.Delete(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<OcurrenceViewModel> GetDetailsOcurrence(Guid id)
+        {
+            return _mapper.Map<OcurrenceViewModel>(await _ocurrenceService.GetOcurrenceAnswers(id));
         }
 
         private async Task<IEnumerable<OcurrenceViewModel>> GetOcurrencesProfile(Guid id)
         {
 
-            return _mapper.Map<IEnumerable<OcurrenceViewModel>>(await _fornecedorService.GetOcurrencesProfile(id));
+            return _mapper.Map<IEnumerable<OcurrenceViewModel>>(await _ocurrenceService.GetOcurrencesProfile(id));
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-
-        //// GET: Ocurrences/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Ocurrences/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,PublishDateTime,Content,Category")] OcurrenceViewModel ocurrenceViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        ocurrenceViewModel.Id = Guid.NewGuid();
-        //        _context.Add(ocurrenceViewModel);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(ocurrenceViewModel);
-        //}
-
-        //// GET: Ocurrences/Edit/5
-        //public async Task<IActionResult> Edit(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var ocurrenceViewModel = await _context.OcurrenceViewModel.FindAsync(id);
-        //    if (ocurrenceViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(ocurrenceViewModel);
-        //}
-
-        //// POST: Ocurrences/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(Guid id, [Bind("Id,PublishDateTime,Content,Category")] OcurrenceViewModel ocurrenceViewModel)
-        //{
-        //    if (id != ocurrenceViewModel.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(ocurrenceViewModel);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!OcurrenceViewModelExists(ocurrenceViewModel.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(ocurrenceViewModel);
-        //}
-
-        //// GET: Ocurrences/Delete/5
-        //public async Task<IActionResult> Delete(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var ocurrenceViewModel = await _context.OcurrenceViewModel
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (ocurrenceViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(ocurrenceViewModel);
-        //}
-
-        //// POST: Ocurrences/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(Guid id)
-        //{
-        //    var ocurrenceViewModel = await _context.OcurrenceViewModel.FindAsync(id);
-        //    _context.OcurrenceViewModel.Remove(ocurrenceViewModel);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         //private bool OcurrenceViewModelExists(Guid id)
         //{

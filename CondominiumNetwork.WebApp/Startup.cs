@@ -61,12 +61,19 @@ namespace CondominiumNetwork.WebApp
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .AddSessionStateTempDataProvider()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSession();
 
             services.AddScoped<CondominiumNetworkContext>();
             services.AddScoped<IOcurrenceService, OcurrenceService>();
             services.AddScoped<IOcurrenceRepository, OcurrenceRepository>();
-            services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
+            services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
+            services.AddScoped<IAnswerService, AnswerService>();
+            services.AddScoped<IAnswerRepository, AnswerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,6 +96,7 @@ namespace CondominiumNetwork.WebApp
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
@@ -96,6 +104,8 @@ namespace CondominiumNetwork.WebApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            
         }
     }
 }

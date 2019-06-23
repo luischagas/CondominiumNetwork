@@ -1,5 +1,6 @@
 ﻿using CondominiumNetwork.DomainModel.Entities;
 using CondominiumNetwork.DomainModel.Interfaces.Repositories;
+using CondominiumNetwork.DomainModel.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CondominiumNetwork.DomainService
 {
-    public class ProfileService
+    public class ProfileService : IProfileService
     {
         private IProfileRepository _profileRepository;
 
@@ -16,31 +17,34 @@ namespace CondominiumNetwork.DomainService
             _profileRepository = profileRepository;
         }
 
-        public async Task CreateProfile(Profile profile)
+        public async Task Create(Profile profile)
         {
             await _profileRepository.Create(profile);
         }
 
-        public async Task UpdateProfile(Profile profile)
+        public async Task Update(Profile profile)
         {
            await _profileRepository.Update(profile);
         }
 
-        public async Task DeleteProfile(Guid profileId)
+        public async Task Delete(Guid profileId)
         {
            await _profileRepository.Delete(profileId);
         }
 
-        public async Task<Profile> GetProfile(Guid profileId)
+        public async Task<Profile> Get(Guid profileId)
         {
             return await _profileRepository.Read(profileId);
         }
 
-        public async Task<IEnumerable<Profile>> GetAllProfiles()
+        public async Task<IEnumerable<Profile>> GetAll()
         {
             return await _profileRepository.ReadAll();
         }
 
-
+        public void Dispose()
+        {
+            _profileRepository?.Dispose();
+        }
     }
 }
