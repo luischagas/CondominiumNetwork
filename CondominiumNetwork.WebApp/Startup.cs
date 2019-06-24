@@ -23,57 +23,46 @@ using CondominiumNetwork.WebApp.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using CondominiumNetwork.WebApp.Areas.Identity.Pages.Account;
 using Microsoft.AspNet.Identity;
+using CondominiumNetwork.WebApp.Configurations;
 
 namespace CondominiumNetwork.WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup(IHostingEnvironment hostEnvironment)
+        {
+            var builder = new ConfigurationBuilder()
+               .SetBasePath(hostEnvironment.ContentRootPath)
+               .AddJsonFile("appsettings.json", true, true)
+               .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", true, true)
+               .AddEnvironmentVariables();
+
+            if (hostEnvironment.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
+            Configuration = builder.Build();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddIdentityConfiguration(Configuration);
 
             services.AddDbContext<CondominiumNetworkContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<CondominiumNetworkContext>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddDefaultTokenProviders();
-
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddMvc()
-                .AddSessionStateTempDataProvider()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvcConfiguration();
 
             services.AddSession();
 
-            services.AddScoped<CondominiumNetworkContext>();
-            services.AddScoped<IOcurrenceService, OcurrenceService>();
-            services.AddScoped<IOcurrenceRepository, OcurrenceRepository>();
-            services.AddScoped<IProfileService, ProfileService>();
-            services.AddScoped<IProfileRepository, ProfileRepository>();
-            services.AddScoped<IAnswerService, AnswerService>();
-            services.AddScoped<IAnswerRepository, AnswerRepository>();
+            services.ResolveDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

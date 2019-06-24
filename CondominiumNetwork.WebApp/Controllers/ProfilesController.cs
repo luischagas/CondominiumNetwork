@@ -1,40 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using CondominiumNetwork.WebApp.Data;
 using CondominiumNetwork.WebApp.ViewModels;
+using CondominiumNetwork.DomainModel.Interfaces.Services;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using CondominiumNetwork.DomainModel.Identity;
+using CondominiumNetwork.DomainModel.Entities;
+using Microsoft.AspNetCore.Http;
+using Profile = CondominiumNetwork.DomainModel.Entities.Profile;
 
 namespace CondominiumNetwork.WebApp.Controllers
 {
     public class ProfilesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IProfileService _profileService;
+        private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProfilesController(ApplicationDbContext context)
+        public ProfilesController(IProfileService profileService, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
-            _context = context;
+            _profileService = profileService;
+            _mapper = mapper;
+            _userManager = userManager;
         }
+
+
 
         // GET: Profiles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProfileViewModel.ToListAsync());
+            return View(_mapper.Map<IEnumerable<ProfileViewModel>>(await _profileService.GetAll()));
         }
 
         // GET: Profiles/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var profileViewModel = await GetProfileOcurrences(id);
 
-            var profileViewModel = await _context.ProfileViewModel
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (profileViewModel == null)
             {
                 return NotFound();
@@ -43,7 +47,7 @@ namespace CondominiumNetwork.WebApp.Controllers
             return View(profileViewModel);
         }
 
-        // GET: Profiles/Create
+        //GET: Profiles/Create
         public IActionResult Create()
         {
             return View();
@@ -56,29 +60,37 @@ namespace CondominiumNetwork.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Birthday,BlockApartment,PhotoUrl")] ProfileViewModel profileViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                profileViewModel.Id = Guid.NewGuid();
-                _context.Add(profileViewModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(profileViewModel);
-        }
+            ApplicationUser usr = await GetCurrentUserAsync();
 
-        // GET: Profiles/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
+            var currentUserGuid = Guid.Parse(usr.Id);
+
+            if (currentUserGuid == null)
             {
                 return NotFound();
             }
 
-            var profileViewModel = await _context.ProfileViewModel.FindAsync(id);
+            if (!ModelState.IsValid) return View(profileViewModel);
+
+            var profile = _mapper.Map<Profile>(profileViewModel);
+
+            profile.Id = currentUserGuid;
+
+            await _profileService.Create(profile);
+
+            return RedirectToAction("Details", new { @id = currentUserGuid });
+
+        }
+
+        // GET: Profiles/Edit/5
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var profileViewModel = await GetProfileOcurrences(id);
+
             if (profileViewModel == null)
             {
                 return NotFound();
             }
+
             return View(profileViewModel);
         }
 
@@ -89,66 +101,33 @@ namespace CondominiumNetwork.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Birthday,BlockApartment,PhotoUrl")] ProfileViewModel profileViewModel)
         {
+            ApplicationUser usr = await GetCurrentUserAsync();
+
+            var currentUserGuid = Guid.Parse(usr.Id);
+
+            if (currentUserGuid == null)
+            {
+                return NotFound();
+            }
+
             if (id != profileViewModel.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(profileViewModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProfileViewModelExists(profileViewModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(profileViewModel);
+            if (!ModelState.IsValid) return View(profileViewModel);
+
+            var profile = _mapper.Map<Profile>(profileViewModel);
+            await _profileService.Update(profile);
+
+            return RedirectToAction("Details", new { @id = currentUserGuid });
         }
 
-        // GET: Profiles/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        private async Task<ProfileViewModel> GetProfileOcurrences(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var profileViewModel = await _context.ProfileViewModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (profileViewModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(profileViewModel);
+            return _mapper.Map<ProfileViewModel>(await _profileService.GetProfileOcurrences(id));
         }
 
-        // POST: Profiles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var profileViewModel = await _context.ProfileViewModel.FindAsync(id);
-            _context.ProfileViewModel.Remove(profileViewModel);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProfileViewModelExists(Guid id)
-        {
-            return _context.ProfileViewModel.Any(e => e.Id == id);
-        }
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }

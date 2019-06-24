@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CondominiumNetwork.DomainModel.Interfaces.Repositories
 {
-    public interface IAnswerRepository : IRepository<Answer, Guid>
+    public interface IAnswerRepository : IRepository<Answer>
     {
         Task<IEnumerable<Answer>> GetAnswersOcurrence(Guid id);
     }

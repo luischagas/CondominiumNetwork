@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CondominiumNetwork.DomainModel.Entities
 {
-    public class Profile : EntityBase<Guid>
+    public class Profile : EntityBase
     {
         public string Name { get; set; }
         public DateTime Birthday { get; set; }

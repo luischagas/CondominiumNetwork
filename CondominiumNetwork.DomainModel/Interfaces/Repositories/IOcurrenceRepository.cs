@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace CondominiumNetwork.DomainModel.Interfaces.Repositories
 {
-    public interface IOcurrenceRepository : IRepository<Ocurrence, Guid>
+    public interface IOcurrenceRepository : IRepository<Ocurrence>
     {
         Task<Ocurrence> GetOcurrenceAnswers(Guid id);
-        Task<IEnumerable<Ocurrence>> GetOcurrencesProfile(Guid id);
     }
 }

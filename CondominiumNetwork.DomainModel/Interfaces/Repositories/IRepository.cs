@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace CondominiumNetwork.DomainModel.Interfaces.Repositories
 {
-    public interface IRepository<T, EntityId> : IDisposable where T : EntityBase<EntityId>
+    public interface IRepository<TEntity> : IDisposable where TEntity : EntityBase
     {
-        Task Create(T entity);
-        Task<T> Read(EntityId id);
-        Task<IEnumerable<T>> ReadAll();
-        Task Update(T entity);
-        Task Delete(EntityId id);
-        Task<IEnumerable<T>> Search(Expression<Func<T, bool>> predicate);
+        Task Create(TEntity entity);
+        Task<TEntity> Read(Guid id);
+        Task<IEnumerable<TEntity>> ReadAll();
+        Task Update(TEntity entity);
+        Task Delete(Guid id);
         Task<int> SaveChanges();
     }
 }

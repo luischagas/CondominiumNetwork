@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CondominiumNetwork.DomainModel.Entities
 {
-    public class Ocurrence : EntityBase<Guid>
+    public class Ocurrence : EntityBase
     {
         public DateTime PublishDateTime { get; set; }
         public string Content { get; set; }

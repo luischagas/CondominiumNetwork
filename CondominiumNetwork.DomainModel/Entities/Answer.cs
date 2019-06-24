@@ -2,7 +2,7 @@
 
 namespace CondominiumNetwork.DomainModel.Entities
 {
-    public class Answer : EntityBase<Guid>
+    public class Answer : EntityBase
     {
         public DateTime PublishDateTime { get; set; }
         public string Content { get; set; }

@@ -1,13 +1,13 @@
-﻿@model IEnumerable<CondominiumNetwork.WebApp.ViewModels.OcurrenceViewModel>
+﻿@model IEnumerable<CondominiumNetwork.WebApp.ViewModels.WarningViewModel>
 
 @{
-    ViewData["Title"] = "Ocurrences";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Ocurrences</h1>
+<h1>Warnings</h1>
 
 <p>
-    <a class="btn btn-info" asp-action="Create">New Ocurrence</a>
+    <a class="btn btn-info" asp-action="Create">New Warning</a>
 </p>
 <table class="table table-hover">
     <thead class="thead-dark">
@@ -17,9 +17,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
             </th>
             <th></th>
         </tr>
@@ -33,9 +30,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category)
                 </td>
                 <td class="text-right">
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><span class="fa fa-search"></span></a>

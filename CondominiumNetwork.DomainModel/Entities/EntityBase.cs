@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CondominiumNetwork.DomainModel.Entities
 {
-    public abstract class EntityBase<EntityId>
+    public abstract class EntityBase
     {
-        public EntityId Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -84,6 +84,8 @@ namespace CondominiumNetwork.WebApp.Controllers
 
             ocurrence.ProfileId = currentUserGuid;
 
+            ocurrence.PublishDateTime = DateTime.Now;
+
             await _ocurrenceService.Create(ocurrence);
 
             return RedirectToAction(nameof(Index));
@@ -126,7 +128,10 @@ namespace CondominiumNetwork.WebApp.Controllers
             if (!ModelState.IsValid) return View(ocurrenceViewModel);
 
             var ocurrence = _mapper.Map<Ocurrence>(ocurrenceViewModel);
+
             ocurrence.ProfileId = currentUserGuid;
+            ocurrence.PublishDateTime = DateTime.Now;
+
             await _ocurrenceService.Update(ocurrence);
 
             return RedirectToAction(nameof(Index));
@@ -164,17 +169,7 @@ namespace CondominiumNetwork.WebApp.Controllers
             return _mapper.Map<OcurrenceViewModel>(await _ocurrenceService.GetOcurrenceAnswers(id));
         }
 
-        private async Task<IEnumerable<OcurrenceViewModel>> GetOcurrencesProfile(Guid id)
-        {
-
-            return _mapper.Map<IEnumerable<OcurrenceViewModel>>(await _ocurrenceService.GetOcurrencesProfile(id));
-        }
-
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-        //private bool OcurrenceViewModelExists(Guid id)
-        //{
-        //    return _context.OcurrenceViewModel.Any(e => e.Id == id);
-        //}
     }
 }

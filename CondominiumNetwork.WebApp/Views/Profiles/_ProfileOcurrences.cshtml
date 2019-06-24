@@ -1,0 +1,43 @@
+﻿@model CondominiumNetwork.WebApp.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<div style="padding-top: 20px">
+    <div>
+        <hr />
+        <h4>My Ocurrences</h4>
+    </div>
+
+    @if (Model != null)
+    {
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        <span>Content</span>
+                    </th>
+                    <th>
+                        <span>Publish Date</span>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Ocurrences)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PublishDateTime)
+                        </td>
+                    </tr>
+                }
+            </tbody>    
+        </table>
+    }
+</div>

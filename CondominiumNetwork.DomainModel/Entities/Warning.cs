@@ -2,7 +2,7 @@
 
 namespace CondominiumNetwork.DomainModel.Entities
 {
-    public class Warning : EntityBase<Guid>
+    public class Warning : EntityBase
     {
         public Guid ProfileId { get; set; }
         public DateTime PublishDateTime { get; set; }

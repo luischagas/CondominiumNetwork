@@ -16,5 +16,6 @@ namespace CondominiumNetwork.WebApp.Data
         }
         public DbSet<CondominiumNetwork.WebApp.ViewModels.ProfileViewModel> ProfileViewModel { get; set; }
         public DbSet<CondominiumNetwork.WebApp.ViewModels.AnswerViewModel> AnswerViewModel { get; set; }
+        public DbSet<CondominiumNetwork.WebApp.ViewModels.WarningViewModel> WarningViewModel { get; set; }
     }
 }

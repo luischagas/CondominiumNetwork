@@ -11,8 +11,9 @@ namespace CondominiumNetwork.WebApp.AutoMapper
         public AutoMapperConfig()
         {
             CreateMap<Ocurrence, OcurrenceViewModel>().ReverseMap();
-            CreateMap<Profile, ProfileViewModel>().ReverseMap();
+            CreateMap<DomainModel.Entities.Profile, ProfileViewModel>().ReverseMap();
             CreateMap<Answer, AnswerViewModel>().ReverseMap();
+            CreateMap<Warning, WarningViewModel>().ReverseMap();
 
         }
     }

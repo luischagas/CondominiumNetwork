@@ -26,4 +26,9 @@
     <ProjectReference Include="..\CondominiumNetwork.Infrastructure.DataAcess\CondominiumNetwork.Infrastructure.DataAcess.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
 </Project>

@@ -13,5 +13,6 @@ namespace CondominiumNetwork.DomainModel.Interfaces.Services
         Task Create(Profile profile);
         Task Update(Profile profile);
         Task Delete(Guid id);
+        Task<Profile> GetProfileOcurrences(Guid id);
     }
 }

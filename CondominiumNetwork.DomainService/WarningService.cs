@@ -1,13 +1,13 @@
 ﻿using CondominiumNetwork.DomainModel.Entities;
 using CondominiumNetwork.DomainModel.Interfaces.Repositories;
+using CondominiumNetwork.DomainModel.Interfaces.Services;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CondominiumNetwork.DomainService
 {
-    public class WarningService
+    public class WarningService : IWarningService
     {
         private IWarningRepository _warningRepository;
 
@@ -16,30 +16,39 @@ namespace CondominiumNetwork.DomainService
             _warningRepository = warningRepository;
         }
 
-        public async Task CreateWarning(Warning warning)
+        public async Task Create(Warning warning)
         {
             await _warningRepository.Create(warning);
         }
 
-        public async Task UpdateWarning(Warning warning)
+        public async Task Update(Warning warning)
         {
             await _warningRepository.Update(warning);
         }
 
-        public async Task DeleteWarning(Guid warningId)
+        public async Task Delete(Guid warningId)
         {
             await _warningRepository.Delete(warningId);
         }
 
-        public async Task<Warning> GetWarning(Guid warningId)
+        public async Task<Warning> Get(Guid warningId)
         {
             return await _warningRepository.Read(warningId);
         }
 
-        public async Task<IEnumerable<Warning>> GetAllWarning()
+        public async Task<IEnumerable<Warning>> GetAll()
         {
             return await _warningRepository.ReadAll();
         }
 
+        public async Task<Warning> GetDetailsWarning(Guid id)
+        {
+            return await _warningRepository.GetDetailsWarning(id);
+        }
+
+        public void Dispose()
+        {
+            _warningRepository?.Dispose();
+        }
     }
 }

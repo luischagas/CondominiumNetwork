@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CondominiumNetwork.DomainModel\CondominiumNetwork.DomainModel.csproj" />
+    <ProjectReference Include="..\CondominiumNetwork.Infrastructure.AzureStorage\CondominiumNetwork.Infrastructure.AzureStorage.csproj" />
   </ItemGroup>
 
   <ItemGroup>

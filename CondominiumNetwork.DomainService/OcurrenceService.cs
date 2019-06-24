@@ -42,10 +42,6 @@ namespace CondominiumNetwork.DomainService
             return await _ocurrenceRepository.ReadAll();
         }
 
-        public async Task<IEnumerable<Ocurrence>> GetOcurrencesProfile(Guid profileId)
-        {
-            return await _ocurrenceRepository.GetOcurrencesProfile(profileId);
-        }
         public async Task<Ocurrence> GetOcurrenceAnswers(Guid id)
         {
             return await _ocurrenceRepository.GetOcurrenceAnswers(id);

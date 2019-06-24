@@ -42,6 +42,11 @@ namespace CondominiumNetwork.DomainService
             return await _profileRepository.ReadAll();
         }
 
+        public async Task<Profile> GetProfileOcurrences(Guid id)
+        {
+            return await _profileRepository.GetProfileOcurrences(id);
+        }
+
         public void Dispose()
         {
             _profileRepository?.Dispose();
