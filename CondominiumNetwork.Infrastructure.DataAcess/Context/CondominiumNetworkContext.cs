@@ -1,5 +1,6 @@
 ﻿using CondominiumNetwork.DomainModel.Entities;
 using CondominiumNetwork.DomainModel.Identity;
+using CondominiumNetwork.Infrastructure.DataAcess.Context.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Context
         public DbSet<Ocurrence> Ocurrences { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Warning> Warnings { get; set; }
+        public DbSet<DbCategory> Categories { get; set; }
         public DbSet<ApplicationUser> applicationUsers { get; set; }
 
 

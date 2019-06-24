@@ -22,7 +22,6 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Mappings
                 .HasColumnType("varchar(50)");
 
             builder.Property(p => p.PhotoUrl)
-                .IsRequired()
                 .HasColumnType("varchar(100)");
 
             // 1 : N => Profile : Ocurrence

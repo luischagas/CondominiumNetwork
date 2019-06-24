@@ -14,13 +14,13 @@ namespace CondominiumNetwork.WebApp.ViewModels
         [Required(ErrorMessage = "The {0} field is required")]
         public string Name { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Required(ErrorMessage = "The {0} field is required")]
         public DateTime Birthday { get; set; }
 
         [Required(ErrorMessage = "The {0} field is required")]
         public string BlockApartment { get; set; }
 
-        [Required(ErrorMessage = "The {0} field is required")]
         public string PhotoUrl { get; set; }
         public IEnumerable<OcurrenceViewModel> Ocurrences { get; set; }
     }

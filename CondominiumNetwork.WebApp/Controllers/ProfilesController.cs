@@ -16,12 +16,14 @@ namespace CondominiumNetwork.WebApp.Controllers
     public class ProfilesController : Controller
     {
         private readonly IProfileService _profileService;
+        private readonly IPhotoService _photoService;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProfilesController(IProfileService profileService, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public ProfilesController(IProfileService profileService, IPhotoService photoService, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
             _profileService = profileService;
+            _photoService = photoService;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -75,6 +77,21 @@ namespace CondominiumNetwork.WebApp.Controllers
 
             profile.Id = currentUserGuid;
 
+            //==== Upload da foto do Cliente ====
+            for (int i = 0; i < Request.Form.Files.Count; i++)
+            {
+                var file = Request.Form.Files[i];
+                var photo = new Photo
+                {
+                    ContainerName = "profilepictures",
+                    FileName = file.FileName,
+                    BinaryContent = file.OpenReadStream(),
+                    ContentType = file.ContentType
+                };
+                profile.PhotoUrl = await _photoService.UploadPhotoAsync(photo);
+            }
+            //===================================
+
             await _profileService.Create(profile);
 
             return RedirectToAction("Details", new { @id = currentUserGuid });
@@ -118,6 +135,22 @@ namespace CondominiumNetwork.WebApp.Controllers
             if (!ModelState.IsValid) return View(profileViewModel);
 
             var profile = _mapper.Map<Profile>(profileViewModel);
+
+            //==== Upload da foto do Cliente ====
+            for (int i = 0; i < Request.Form.Files.Count; i++)
+            {
+                var file = Request.Form.Files[i];
+                var photo = new Photo
+                {
+                    ContainerName = "profilepictures",
+                    FileName = file.FileName,
+                    BinaryContent = file.OpenReadStream(),
+                    ContentType = file.ContentType
+                };
+                profile.PhotoUrl = await _photoService.UploadPhotoAsync(photo);
+            }
+            //===================================
+
             await _profileService.Update(profile);
 
             return RedirectToAction("Details", new { @id = currentUserGuid });

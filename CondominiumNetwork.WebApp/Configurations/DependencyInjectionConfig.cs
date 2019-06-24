@@ -20,6 +20,9 @@ namespace CondominiumNetwork.WebApp.Configurations
             services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddScoped<IWarningService, WarningService>();
             services.AddScoped<IWarningRepository, WarningRepository>();
+            services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<IPhotoRepository, PhotoAzureBlobRepository>();
+
 
             return services;
         }

@@ -4,14 +4,16 @@ using CondominiumNetwork.Infrastructure.DataAcess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CondominiumNetwork.Infrastructure.DataAcess.Migrations
 {
     [DbContext(typeof(CondominiumNetworkContext))]
-    partial class CondominiumNetworkContextModelSnapshot : ModelSnapshot
+    [Migration("20190624020559_Photos")]
+    partial class Photos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,6 +68,28 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Migrations
                     b.ToTable("Ocurrences");
                 });
 
+            modelBuilder.Entity("CondominiumNetwork.DomainModel.Entities.Photo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ContainerName")
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("varchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("CondominiumNetwork.DomainModel.Entities.Profile", b =>
                 {
                     b.Property<Guid>("Id")
@@ -82,6 +106,7 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("PhotoUrl")
+                        .IsRequired()
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
@@ -176,11 +201,11 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnName("Description");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

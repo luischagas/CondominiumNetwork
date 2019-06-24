@@ -17,8 +17,12 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
+                <label class="control-label">Category</label>
+                <select name="currency"
+                        asp-items="@(new SelectList(ViewBag.Categories,"Description","Description"))"
+                        class="form-control">
+                    <option>Select the currency</option>
+                </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group">

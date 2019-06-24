@@ -61,6 +61,7 @@ namespace CondominiumNetwork.WebApp.Controllers
         // GET: Ocurrences/Create
         public IActionResult Create()
         {
+            ViewBag.Categories = _context.Currencies.Select(c => c.Currency).ToList();
             return View();
         }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CondominiumNetwork.WebApp.ViewModels;
+using CondominiumNetwork.Infrastructure.DataAcess.Context.Model;
 
 namespace CondominiumNetwork.WebApp.Data
 {
@@ -17,5 +18,6 @@ namespace CondominiumNetwork.WebApp.Data
         public DbSet<CondominiumNetwork.WebApp.ViewModels.ProfileViewModel> ProfileViewModel { get; set; }
         public DbSet<CondominiumNetwork.WebApp.ViewModels.AnswerViewModel> AnswerViewModel { get; set; }
         public DbSet<CondominiumNetwork.WebApp.ViewModels.WarningViewModel> WarningViewModel { get; set; }
+        public DbSet<CondominiumNetwork.Infrastructure.DataAcess.Context.Model.DbCategory> DbCategory { get; set; }
     }
 }
