@@ -14,7 +14,7 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Repository
     {
         public AnswerRepository(CondominiumNetworkContext context) : base(context) { }
 
-        public async virtual Task<IEnumerable<Answer>> GetAnswersOcurrence(Guid id)
+        public async virtual Task<IEnumerable<Answer>> GetDetailsAnswers(Guid id)
         {
             return await Db.Answers.AsNoTracking()
                  .Include(o => o.Profile)

@@ -8,6 +8,6 @@ namespace CondominiumNetwork.DomainModel.Interfaces.Repositories
 {
     public interface IAnswerRepository : IRepository<Answer>
     {
-        Task<IEnumerable<Answer>> GetAnswersOcurrence(Guid id);
+        Task<IEnumerable<Answer>> GetDetailsAnswers(Guid id);
     }
 }

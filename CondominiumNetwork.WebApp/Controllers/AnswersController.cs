@@ -34,9 +34,9 @@ namespace CondominiumNetwork.WebApp.Controllers
             return View(_mapper.Map<IEnumerable<OcurrenceViewModel>>(await _answerService.GetAll()));
         }
 
-        private async Task<IEnumerable<AnswerViewModel>> GetAnswersOcurrence(Guid id)
+        private async Task<IEnumerable<AnswerViewModel>> GetDetailsAnswers(Guid id)
         {
-            return _mapper.Map<IEnumerable<AnswerViewModel>>(await _answerService.GetAnswersOcurrence(id));
+            return _mapper.Map<IEnumerable<AnswerViewModel>>(await _answerService.GetDetailsAnswers(id));
         }
 
         //GET: Answers/Details/5
@@ -47,7 +47,7 @@ namespace CondominiumNetwork.WebApp.Controllers
                 return NotFound();
             }
 
-            var answerViewModel = await GetAnswersOcurrence(id);
+            var answerViewModel = await GetDetailsAnswers(id);
 
             if (answerViewModel == null)
             {

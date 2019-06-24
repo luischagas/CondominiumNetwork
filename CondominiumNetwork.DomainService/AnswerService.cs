@@ -42,9 +42,9 @@ namespace CondominiumNetwork.DomainService
             return await _answerRepository.ReadAll();
         }
 
-        public async Task<IEnumerable<Answer>> GetAnswersOcurrence(Guid profileId)
+        public async Task<IEnumerable<Answer>> GetDetailsAnswers(Guid profileId)
         {
-            return await _answerRepository.GetAnswersOcurrence(profileId);
+            return await _answerRepository.GetDetailsAnswers(profileId);
         }
 
         public void Dispose()

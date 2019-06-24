@@ -20,8 +20,8 @@ namespace CondominiumNetwork.WebApp.Controllers
 
         public CategoriesController()
         {
-            CondominiumNetworkContext context = new CondominiumNetworkContext();
-            _context = context;
+            //CondominiumNetworkContext context = new CondominiumNetworkContext();
+            //_context = context;
         }
 
         // GET: Categories

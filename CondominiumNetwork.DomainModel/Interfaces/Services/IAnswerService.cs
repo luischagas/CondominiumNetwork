@@ -13,6 +13,6 @@ namespace CondominiumNetwork.DomainModel.Interfaces.Services
         Task Create(Answer answer);
         Task Update(Answer answer);
         Task Delete(Guid id);
-        Task<IEnumerable<Answer>> GetAnswersOcurrence(Guid id);
+        Task<IEnumerable<Answer>> GetDetailsAnswers(Guid id);
     }
 }
