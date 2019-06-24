@@ -16,11 +16,11 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Repository
     {
         public CategoryRepository(CondominiumNetworkContext context) : base(context) { }
 
-        //public async Task Create(Category entity)
-        //{
-        //    Db.Categories.Add(entity);
-        //    await SaveChanges();
-        //}
+        public override async Task Create(DbCategory entity)
+        {
+            Db.Categories.Add(entity);
+            await SaveChanges();
+        }
 
         //public Task Update(Category entity)
         //{
@@ -32,9 +32,9 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Repository
         //    throw new NotImplementedException();
         //}
 
-        //Task<IEnumerable<Category>> ICategoryRepository.ReadAll()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public override async Task<IEnumerable<DbCategory>> ReadAll()
+        {
+            return await Db.Categories.ToListAsync();
+        }
     }
 }
