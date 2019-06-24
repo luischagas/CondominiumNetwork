@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using CondominiumNetwork.DomainModel.Identity;
 using CondominiumNetwork.DomainModel.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CondominiumNetwork.WebApp.Controllers
 {
+    [Authorize]
     public class OcurrencesController : Controller
     {
         private readonly IOcurrenceService _ocurrenceService;
@@ -61,7 +63,7 @@ namespace CondominiumNetwork.WebApp.Controllers
         // GET: Ocurrences/Create
         public IActionResult Create()
         {
-            ViewBag.Categories = _context.Currencies.Select(c => c.Currency).ToList();
+            //ViewBag.Categories = _context.Currencies.Select(c => c.Currency).ToList();
             return View();
         }
 

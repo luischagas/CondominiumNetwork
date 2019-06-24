@@ -7,22 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CondominiumNetwork.Infrastructure.DataAcess.Context.Model;
 using CondominiumNetwork.WebApp.Data;
+using CondominiumNetwork.Infrastructure.DataAcess.Context;
+using CondominiumNetwork.DomainModel.ValueObjects;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CondominiumNetwork.WebApp.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly CondominiumNetworkContext _context;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController()
         {
+            CondominiumNetworkContext context = new CondominiumNetworkContext();
             _context = context;
         }
 
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DbCategory.ToListAsync());
+            return View(await _context.Categories.ToListAsync());
         }
 
         // GET: Categories/Details/5
@@ -33,7 +38,7 @@ namespace CondominiumNetwork.WebApp.Controllers
                 return NotFound();
             }
 
-            var dbCategory = await _context.DbCategory
+            var dbCategory = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dbCategory == null)
             {
@@ -54,12 +59,13 @@ namespace CondominiumNetwork.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Category")] DbCategory dbCategory)
+        public async Task<IActionResult> Create([Bind("Id,Category")] DbCategory dbCategory, string category)
         {
             if (ModelState.IsValid)
             {
                 dbCategory.Id = Guid.NewGuid();
-                _context.Add(dbCategory);
+                dbCategory.Category = new Category(category);
+                _context.Categories.Add(dbCategory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -74,7 +80,7 @@ namespace CondominiumNetwork.WebApp.Controllers
                 return NotFound();
             }
 
-            var dbCategory = await _context.DbCategory.FindAsync(id);
+            var dbCategory = await _context.Categories.FindAsync(id);
             if (dbCategory == null)
             {
                 return NotFound();
@@ -87,7 +93,7 @@ namespace CondominiumNetwork.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Category")] DbCategory dbCategory)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Category")] DbCategory dbCategory, string currency)
         {
             if (id != dbCategory.Id)
             {
@@ -98,6 +104,7 @@ namespace CondominiumNetwork.WebApp.Controllers
             {
                 try
                 {
+                    dbCategory.Category = new Category(currency);
                     _context.Update(dbCategory);
                     await _context.SaveChangesAsync();
                 }
@@ -125,7 +132,7 @@ namespace CondominiumNetwork.WebApp.Controllers
                 return NotFound();
             }
 
-            var dbCategory = await _context.DbCategory
+            var dbCategory = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dbCategory == null)
             {
@@ -140,15 +147,15 @@ namespace CondominiumNetwork.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var dbCategory = await _context.DbCategory.FindAsync(id);
-            _context.DbCategory.Remove(dbCategory);
+            var dbCategory = await _context.Categories.FindAsync(id);
+            _context.Categories.Remove(dbCategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DbCategoryExists(Guid id)
         {
-            return _context.DbCategory.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

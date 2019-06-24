@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CondominiumNetwork.WebApp.ViewModels.WarningViewModel>
+﻿@using CondominiumNetwork.WebApp.Extensions
+@model IEnumerable<CondominiumNetwork.WebApp.ViewModels.WarningViewModel>
+
 
 @{
     ViewData["Title"] = "Index";
@@ -6,7 +8,7 @@
 
 <h1>Warnings</h1>
 
-<p>
+<p supress-by-claim-name="">
     <a class="btn btn-info" asp-action="Create">New Warning</a>
 </p>
 <table class="table table-hover">

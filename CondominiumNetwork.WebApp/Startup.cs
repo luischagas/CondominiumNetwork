@@ -22,7 +22,6 @@ using CondominiumNetwork.DomainModel.Identity;
 using CondominiumNetwork.WebApp.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using CondominiumNetwork.WebApp.Areas.Identity.Pages.Account;
-using Microsoft.AspNet.Identity;
 using CondominiumNetwork.WebApp.Configurations;
 
 namespace CondominiumNetwork.WebApp

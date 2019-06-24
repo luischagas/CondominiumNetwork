@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CondominiumNetwork.DomainModel.Entities;
+using System;
 
 namespace CondominiumNetwork.DomainModel.ValueObjects
 {

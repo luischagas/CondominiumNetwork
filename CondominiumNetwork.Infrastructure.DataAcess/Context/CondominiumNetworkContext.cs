@@ -20,6 +20,10 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Context
         public DbSet<ApplicationUser> applicationUsers { get; set; }
 
 
+        public CondominiumNetworkContext()
+        {
+        }
+
         public CondominiumNetworkContext(DbContextOptions<CondominiumNetworkContext> options) : base(options)
         {
             if (!_Created)

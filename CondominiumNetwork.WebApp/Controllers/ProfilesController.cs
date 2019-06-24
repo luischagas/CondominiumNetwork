@@ -10,9 +10,11 @@ using CondominiumNetwork.DomainModel.Identity;
 using CondominiumNetwork.DomainModel.Entities;
 using Microsoft.AspNetCore.Http;
 using Profile = CondominiumNetwork.DomainModel.Entities.Profile;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CondominiumNetwork.WebApp.Controllers
 {
+    [Authorize]
     public class ProfilesController : Controller
     {
         private readonly IProfileService _profileService;

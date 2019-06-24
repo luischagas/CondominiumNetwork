@@ -1,4 +1,5 @@
-﻿using CondominiumNetwork.Infrastructure.DataAcess.Context.Model;
+﻿using CondominiumNetwork.DomainModel.ValueObjects;
+using CondominiumNetwork.Infrastructure.DataAcess.Context.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -13,9 +14,11 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Mappings
         {
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.Category)
-                .IsRequired()
-                .HasColumnType("varchar(100)");
+            builder.Property(dbCategory => dbCategory.Category)
+                .HasConversion(
+                    category => category.ToString(),
+                    category => new Category(category))
+                .HasColumnName("Currency");
 
             builder.ToTable("Categories");
         }

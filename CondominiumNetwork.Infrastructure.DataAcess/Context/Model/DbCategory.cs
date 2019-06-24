@@ -1,11 +1,11 @@
-﻿using CondominiumNetwork.DomainModel.ValueObjects;
+﻿using CondominiumNetwork.DomainModel.Entities;
+using CondominiumNetwork.DomainModel.ValueObjects;
 using System;
 
 namespace CondominiumNetwork.Infrastructure.DataAcess.Context.Model
 {
-    public class DbCategory
+    public class DbCategory : EntityBase
     {
-        public Guid Id { get; set; }
         public Category Category { get; set; }
     }
 }
