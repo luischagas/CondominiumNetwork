@@ -9,5 +9,7 @@ namespace CondominiumNetwork.DomainModel.Interfaces.Repositories
     public interface IOcurrenceRepository : IRepository<Ocurrence>
     {
         Task<Ocurrence> GetOcurrenceAnswers(Guid id);
+
+        Task<IEnumerable<Ocurrence>> GetAllOcurrenceAnswers();
     }
 }

@@ -89,7 +89,7 @@ namespace CondominiumNetwork.WebApp.Controllers
 
             await _answerService.Create(answer);
 
-            var url = Url.Action("GetOcurrenceAnswers", "Ocurrences", new { id = answer.Id });
+            var url = Url.Action("GetOcurrenceAnswers", "Ocurrences", new { id = answer.OcurrenceId });
             return Json(new { success = true, url });
         }
 

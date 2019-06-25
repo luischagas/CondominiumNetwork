@@ -24,5 +24,14 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Repository
             return ocurrence;
         }
 
+        public async Task<IEnumerable<Ocurrence>> GetAllOcurrenceAnswers()
+        {
+            var ocurrences = await Db.Ocurrences.AsNoTracking()
+                 .Include(a => a.Answers)
+                 .ToListAsync();
+
+            return ocurrences;
+
+        }
     }
 }

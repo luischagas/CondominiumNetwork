@@ -28,14 +28,12 @@ namespace CondominiumNetwork.WebApp.Controllers
             _userManager = userManager;
         }
 
-        [AllowAnonymous]
         // GET: Warnings
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<WarningViewModel>>(await _warningService.GetAll()));
         }
 
-        [AllowAnonymous]
         // GET: Warnings/Details/5
         public async Task<IActionResult> Details(Guid id)
         {

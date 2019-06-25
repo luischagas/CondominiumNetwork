@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using CondominiumNetwork.Infrastructure.DataAcess.Context.Model;
 using CondominiumNetwork.DomainModel.ValueObjects;
+using System.Linq;
+using static CondominiumNetwork.WebApp.Extensions.CustomAuthorization;
 
 namespace CondominiumNetwork.WebApp.Controllers
 {
@@ -29,22 +31,30 @@ namespace CondominiumNetwork.WebApp.Controllers
             _userManager = userManager;
         }
 
-        // GET: Categories
+        [ClaimsAuthorize("Category", "List")]
         public async Task<IActionResult> Index()
         {
-            return View(_mapper.Map<IEnumerable<CategoryViewModel>>(await _categoryService.ReadAllCategories()));
+            var listCategories = await _categoryService.ReadAllCategories();
+
+            IList<DbCategory> listDbCategory = new List<DbCategory>();
+            foreach (Category item in listCategories)
+            {
+                DbCategory list = new DbCategory();
+                list.Category = item;
+                listDbCategory.Add(list);
+            }
+
+            return View(listDbCategory.ToList());
         }
 
-
+        [ClaimsAuthorize("Category", "Add")]
         // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [ClaimsAuthorize("Category", "Add")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id")] DbCategory dbCategory, string category)

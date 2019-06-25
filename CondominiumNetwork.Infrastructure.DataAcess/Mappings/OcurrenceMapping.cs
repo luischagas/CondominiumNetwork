@@ -1,4 +1,5 @@
 ﻿using CondominiumNetwork.DomainModel.Entities;
+using CondominiumNetwork.DomainModel.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -21,6 +22,12 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Mappings
             builder.HasMany(a => a.Answers)
                 .WithOne(o => o.Ocurrence)
                 .HasForeignKey(o => o.OcurrenceId);
+
+            builder.Property(dbCategory => dbCategory.Category)
+                .HasConversion(
+                    category => category.ToString(),
+                    category => new Category(category))
+                .HasColumnName("Category");
 
             builder.ToTable("Ocurrences");
         }

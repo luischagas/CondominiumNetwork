@@ -10,7 +10,7 @@ namespace CondominiumNetwork.DomainModel.Entities
         public DateTime PublishDateTime { get; set; }
         public string Content { get; set; }
         public Guid ProfileId { get; set; }
-        public string Category { get; set; }
+        public Category Category { get; set; }
         public Profile Profile { get; set; }
         public IEnumerable<Answer> Answers { get; set; }
     }

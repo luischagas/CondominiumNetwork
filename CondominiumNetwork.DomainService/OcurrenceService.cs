@@ -46,6 +46,11 @@ namespace CondominiumNetwork.DomainService
         {
             return await _ocurrenceRepository.GetOcurrenceAnswers(id);
         }
+
+        public async Task<IEnumerable<Ocurrence>> GetAllOcurrenceAnswers()
+        {
+            return await _ocurrenceRepository.GetAllOcurrenceAnswers();
+        }
         public void Dispose()
         {
            _ocurrenceRepository?.Dispose();

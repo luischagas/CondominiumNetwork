@@ -41,7 +41,7 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Repository
                 listCategory.Add(list);
             }
 
-            return listCategory.ToList();
+            return listCategory.ToList().OrderBy(c => c.Description);
         }
 
     }

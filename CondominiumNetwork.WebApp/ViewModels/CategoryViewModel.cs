@@ -11,8 +11,6 @@ namespace CondominiumNetwork.WebApp.ViewModels
 {
     public class CategoryViewModel
     {
-        [Key]
-        public Guid Id { get; set; }
-        public Category Category { get; set; }
+        public IEnumerable<Category> Category { get; set; }
     }
 }

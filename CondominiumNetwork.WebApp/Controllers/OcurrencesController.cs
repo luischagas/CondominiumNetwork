@@ -32,7 +32,7 @@ namespace CondominiumNetwork.WebApp.Controllers
         // GET: Ocurrences
         public async Task<IActionResult> Index()
         {
-            return View(_mapper.Map<IEnumerable<OcurrenceViewModel>>(await _ocurrenceService.GetAll()));
+            return View(_mapper.Map<IEnumerable<OcurrenceViewModel>>(await _ocurrenceService.GetAllOcurrenceAnswers()));
         }
 
         // GET: Ocurrences/Details/5
