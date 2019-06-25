@@ -14,6 +14,7 @@ namespace CondominiumNetwork.WebApp.ViewModels
         [Required(ErrorMessage = "The {0} field is required")]
         public string Name { get; set; }
 
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Required(ErrorMessage = "The {0} field is required")]
         public DateTime Birthday { get; set; }
