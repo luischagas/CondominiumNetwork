@@ -7,34 +7,42 @@ using CondominiumNetwork.Infrastructure.DataAcess.Context.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CondominiumNetwork.Infrastructure.DataAcess.Repository
 {
-    public class CategoryRepository : Repository<DbCategory>
+    public class CategoryRepository : Repository<DbCategory>, ICategoryRepository
     {
         public CategoryRepository(CondominiumNetworkContext context) : base(context) { }
 
-        public override async Task Create(DbCategory entity)
+        public virtual async Task CreateCategory(Category entity)
         {
-            Db.Categories.Add(entity);
+
+            DbCategory categoryDbModel = new DbCategory();
+
+            categoryDbModel.Id = Guid.NewGuid();
+            categoryDbModel.Category = entity.Description;
+
+            Db.Categories.Add(categoryDbModel);
             await SaveChanges();
         }
 
-        //public Task Update(Category entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //Task<Category> ICategoryRepository.Read(Guid id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public override async Task<IEnumerable<DbCategory>> ReadAll()
+        public virtual async Task<IEnumerable<Category>> ReadAllCategories()
         {
-            return await Db.Categories.ToListAsync();
+            var listDBModel = await Db.Categories.ToArrayAsync();
+
+            IList<Category> listCategory = new List<Category>();
+            foreach (DbCategory item in listDBModel.ToList())
+            {
+                Category list = new Category();
+                list.Description = item.Category;
+                listCategory.Add(list);
+            }
+
+            return listCategory.ToList();
         }
+
     }
 }

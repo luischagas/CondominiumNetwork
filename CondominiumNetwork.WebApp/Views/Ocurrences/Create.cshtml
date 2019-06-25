@@ -18,10 +18,10 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Category</label>
-                <select name="currency"
+                <select name="category"
                         asp-items="@(new SelectList(ViewBag.Categories,"Description","Description"))"
                         class="form-control">
-                    <option>Select the currency</option>
+                    <option>Select the Category</option>
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>

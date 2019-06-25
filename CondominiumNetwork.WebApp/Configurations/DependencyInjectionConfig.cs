@@ -22,6 +22,8 @@ namespace CondominiumNetwork.WebApp.Configurations
             services.AddScoped<IWarningRepository, WarningRepository>();
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IPhotoRepository, PhotoAzureBlobRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
             return services;

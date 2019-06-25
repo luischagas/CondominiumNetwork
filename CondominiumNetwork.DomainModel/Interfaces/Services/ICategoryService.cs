@@ -9,10 +9,7 @@ namespace CondominiumNetwork.DomainModel.Interfaces.Services
 {
     public interface ICategoryService : IDisposable
     {
-        Task<Category> Get(Guid id);
-        Task<IEnumerable<Category>> GetAll();
-        Task Create(Category ocurrence);
-        Task Update(Category ocurrence);
-        Task Delete(Guid id);
+        Task<IEnumerable<Category>> ReadAllCategories();
+        Task CreateCategory(Category ocurrence);
     }
 }

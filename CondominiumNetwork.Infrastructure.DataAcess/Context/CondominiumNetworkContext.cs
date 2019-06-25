@@ -1,5 +1,6 @@
 ﻿using CondominiumNetwork.DomainModel.Entities;
 using CondominiumNetwork.DomainModel.Identity;
+using CondominiumNetwork.DomainModel.ValueObjects;
 using CondominiumNetwork.Infrastructure.DataAcess.Context.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

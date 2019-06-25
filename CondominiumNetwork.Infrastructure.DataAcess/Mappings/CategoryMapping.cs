@@ -18,7 +18,7 @@ namespace CondominiumNetwork.Infrastructure.DataAcess.Mappings
                 .HasConversion(
                     category => category.ToString(),
                     category => new Category(category))
-                .HasColumnName("Currency");
+                .HasColumnName("Category");
 
             builder.ToTable("Categories");
         }

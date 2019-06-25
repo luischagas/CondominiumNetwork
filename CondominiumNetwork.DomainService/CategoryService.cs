@@ -18,29 +18,14 @@ namespace CondominiumNetwork.DomainService
             _categoryRepository = categoryRepository;
         }
 
-        public async Task Create(Category category)
+        public async Task CreateCategory(Category category)
         {
-            await _categoryRepository.Create(category);
+            await _categoryRepository.CreateCategory(category);
         }
 
-        public async Task Update(Category category)
+        public async Task<IEnumerable<Category>> ReadAllCategories()
         {
-            await _categoryRepository.Update(category);
-        }
-
-        public async Task Delete(Guid ocurrenceId)
-        {
-            await _categoryRepository.Delete(ocurrenceId);
-        }
-
-        public async Task<Category> Get(Guid ocurrenceId)
-        {
-            return await _categoryRepository.Read(ocurrenceId);
-        }
-
-        public async Task<IEnumerable<Category>> GetAll()
-        {
-            return await _categoryRepository.ReadAll();
+            return await _categoryRepository.ReadAllCategories();
         }
 
         public void Dispose()

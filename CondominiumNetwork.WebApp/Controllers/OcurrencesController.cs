@@ -16,13 +16,15 @@ namespace CondominiumNetwork.WebApp.Controllers
     [Authorize]
     public class OcurrencesController : Controller
     {
+        private readonly ICategoryService _categoryService;
         private readonly IOcurrenceService _ocurrenceService;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public OcurrencesController(IMapper mapper, IOcurrenceService ocurrenceService, UserManager<ApplicationUser> userManager)
+        public OcurrencesController(IMapper mapper, IOcurrenceService ocurrenceService, ICategoryService categoryService, UserManager<ApplicationUser> userManager)
         {
             _ocurrenceService = ocurrenceService;
+            _categoryService = categoryService;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -63,7 +65,9 @@ namespace CondominiumNetwork.WebApp.Controllers
         // GET: Ocurrences/Create
         public IActionResult Create()
         {
-            //ViewBag.Categories = _context.Currencies.Select(c => c.Currency).ToList();
+            var categories = _categoryService.ReadAllCategories().Result;
+         
+            ViewBag.Categories = categories;
             return View();
         }
 

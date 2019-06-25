@@ -8,11 +8,8 @@ namespace CondominiumNetwork.DomainModel.Interfaces.Repositories
 {
     public interface ICategoryRepository : IDisposable
     {
-        Task Create(Category entity);
-        Task<Category> Read(Guid id);
-        Task<IEnumerable<Category>> ReadAll();
-        Task Update(Category entity);
-        Task Delete(Guid id);
+        Task CreateCategory(Category entity);
+        Task<IEnumerable<Category>> ReadAllCategories();
         Task<int> SaveChanges();
     }
 }
