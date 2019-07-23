@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="StorageAccountConnectionString" xml:space="preserve">
-    <value>DefaultEndpointsProtocol=https;AccountName=condominiumstorage;AccountKey=Y48rli9VUqh7SHJVtmBaHUMUpkOYGMiPWFFXU0ex4Ly/5D7pjAfVHxjWMGPMlNIOXHODsbVfXYyLN+NR08eaEw==;EndpointSuffix=core.windows.net</value>
+    <value>CONNECTION BLOB</value>
   </data>
 </root>
